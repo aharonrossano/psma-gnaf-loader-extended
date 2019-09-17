@@ -53,9 +53,6 @@ RUN service postgresql restart
 
 # https://stackoverflow.com/questions/26598738/how-to-create-user-database-in-script-for-docker-postgres
 
-# FROM library/postgres
-# COPY init.sql /docker-entrypoint-initdb.d/
-
 #FROM library/postgres
 #ENV POSTGRES_USER docker
 #ENV POSTGRES_PASSWORD docker
@@ -67,13 +64,10 @@ RUN    /etc/init.d/postgresql start &&\
     createdb -O docker docker
 RUN service postgresql restart
 
+# add extensions
 RUN PGPASSWORD=docker psql -U docker -h localhost -d docker --command "CREATE EXTENSION postgis;CREATE EXTENSION postgis_topology;"
 
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
-
-# add extensions
-# COPY ./scripts/init.sql /docker-entrypoint-initdb.d
-# RUN psql -f ./scripts/init.sql docker
 
 # switch back to root
 USER root
