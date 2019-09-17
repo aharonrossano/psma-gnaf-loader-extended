@@ -1,0 +1,21 @@
+# 
+version: "3"
+services:
+  db:
+    image: "ubuntu:18.04"
+    container_name: "psma-gnaf-2019-09-16"
+    # restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./data:/data
+      - ./postgres-scripts:/app/postgres-scripts
+      - my_dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    stdin_open: true
+    tty: true
+    build: .
+volumes:
+  my_dbdata:
